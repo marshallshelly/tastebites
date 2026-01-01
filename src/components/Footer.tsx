@@ -19,7 +19,7 @@ export default function Footer() {
           <Link
             to="/"
             className="text-5xl text-black yesteryear-regular"
-            unstable_viewTransition
+            viewTransition
           >
             Tastebites
           </Link>
@@ -30,7 +30,7 @@ export default function Footer() {
               key={href}
               to={href}
               className="text-gray-400 hover:text-gray-500 text-base font-medium"
-              unstable_viewTransition
+              viewTransition
             >
               {text}
             </Link>

@@ -1,22 +1,30 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { Button, Divider, Input } from "@nextui-org/react";
+import { Button, Divider, Input } from "@heroui/react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { type Output, minLength, object, string, email } from "valibot";
+import {
+  type InferOutput,
+  minLength,
+  object,
+  string,
+  email,
+  pipe,
+} from "valibot";
 import { fetcher } from "../lib/utils/fetcher";
 import { toast } from "sonner";
 import { useAppDispatch } from "../hooks";
 import { signIn } from "../slice/user";
 
 const schema = object({
-  email: string([
+  email: pipe(
+    string(),
     minLength(1, "Email is required"),
-    email("Invalid email address"),
-  ]),
-  password: string([minLength(1, "Password is required")]),
+    email("Invalid email address")
+  ),
+  password: pipe(string(), minLength(1, "Password is required")),
 });
 
-type FormFields = Output<typeof schema>;
+type FormFields = InferOutput<typeof schema>;
 
 export default function Login() {
   const dispatch = useAppDispatch();
@@ -33,7 +41,7 @@ export default function Login() {
     try {
       const { data } = await fetcher.post("/login", values);
       dispatch(signIn(data));
-      navigate("/", { unstable_viewTransition: true });
+      navigate("/", { viewTransition: true });
       reset();
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error?.message, {
@@ -78,7 +86,7 @@ export default function Login() {
                   autoComplete="current-password"
                 />
                 <div className="text-right text-danger">
-                  <Link to="/forgot-password" unstable_viewTransition>
+                  <Link to="/forgot-password" viewTransition>
                     Forgot password?
                   </Link>
                 </div>
@@ -88,7 +96,7 @@ export default function Login() {
                 </Button>
                 <br />
                 <p className="inline-block">Don't have an account?</p>{" "}
-                <Link to="/signup" unstable_viewTransition>
+                <Link to="/signup" viewTransition>
                   <strong>Register now!</strong>
                 </Link>
               </form>

@@ -7,7 +7,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useCallback, useMemo, useState } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import type { RootState } from "../store";
@@ -32,7 +32,7 @@ export default function Header() {
 
   const logout = useCallback(() => {
     dispatch(signOut());
-    navigate("/login", { unstable_viewTransition: true });
+    navigate("/login", { viewTransition: true });
   }, []);
 
   if (!user && !["/login", "/signup", "/forgot-password"].includes(pathname)) {
@@ -46,7 +46,7 @@ export default function Header() {
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
-        <NavbarBrand as={Link} to="/" unstable_viewTransition>
+        <NavbarBrand as={Link} to="/" viewTransition>
           <p className="text-2xl text-black yesteryear-regular">Tastebites</p>
         </NavbarBrand>
       </NavbarContent>
@@ -54,7 +54,7 @@ export default function Header() {
       <NavbarContent className="hidden sm:flex gap-x-16" justify="center">
         {menuItems.map(({ href, text }) => (
           <NavbarItem key={text}>
-            <Link color="foreground" to={href} unstable_viewTransition>
+            <Link color="foreground" to={href} viewTransition>
               {text}
             </Link>
           </NavbarItem>
@@ -65,7 +65,7 @@ export default function Header() {
             to={user ? undefined : "/login"}
             variant="solid"
             radius="sm"
-            unstable_viewTransition={!!user}
+            viewTransition={!!user}
             onPress={user ? logout : undefined}
           >
             {user ? "Logout" : "Login/Register"}
@@ -75,7 +75,7 @@ export default function Header() {
       <NavbarMenu>
         {menuItems.map(({ href, text }) => (
           <NavbarMenuItem key={text}>
-            <Link className="w-full" to={href} unstable_viewTransition>
+            <Link className="w-full" to={href} viewTransition>
               {text}
             </Link>
           </NavbarMenuItem>
@@ -86,7 +86,7 @@ export default function Header() {
             fullWidth
             to={user ? undefined : "/login"}
             size="lg"
-            unstable_viewTransition={!!user}
+            viewTransition={!!user}
             onPress={user ? logout : undefined}
           >
             {user ? "Logout" : "Login/Register"}

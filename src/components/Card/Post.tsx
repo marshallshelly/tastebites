@@ -1,4 +1,4 @@
-import { Image, User } from "@nextui-org/react";
+import { Image, User } from "@heroui/react";
 import type { PostCardProps } from "./types";
 import { createElement, useMemo } from "react";
 import { intervalToDuration } from "date-fns";

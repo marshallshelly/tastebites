@@ -1,16 +1,18 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { Button, Divider, Input } from "@nextui-org/react";
+import { Button, Divider, Input } from "@heroui/react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import {
-  type Output,
+  type InferOutput,
   minLength,
   object,
   string,
   email,
   maxLength,
   forward,
-  custom,
+  pipe,
+  nonEmpty,
+  partialCheck,
 } from "valibot";
 import { isNumberOnly } from "../lib/utils/is-number-only";
 import { fetcher } from "../lib/utils/fetcher";
@@ -18,31 +20,32 @@ import { useAppDispatch } from "../hooks";
 import { signIn } from "../slice/user";
 import { toast } from "sonner";
 
-const schema = object(
-  {
-    email: string([
-      minLength(1, "Email is required"),
-      email("Invalid email address"),
-    ]),
-    phoneNumber: string([
-      minLength(10, "Must be at least 10 digits"),
-      maxLength(10, "Must not be greater than 10 digits"),
-    ]),
-    password: string([minLength(1, "Password is required")]),
-    confirmPassword: string([minLength(1, "Password is required")]),
-  },
-  [
-    forward(
-      custom(
-        (input) => input.password === input.confirmPassword,
-        "The two passwords do not match."
-      ),
-      ["confirmPassword"]
+const schema = pipe(
+  object({
+    email: pipe(
+      string(),
+      nonEmpty("Email is required"),
+      email("Invalid email address")
     ),
-  ]
+    phoneNumber: pipe(
+      string(),
+      minLength(10, "Must be at least 10 digits"),
+      maxLength(10, "Must not be greater than 10 digits")
+    ),
+    password: pipe(string(), nonEmpty("Password is required")),
+    confirmPassword: string(),
+  }),
+  forward(
+    partialCheck(
+      [["password"], ["confirmPassword"]],
+      (input) => input.password === input.confirmPassword,
+      "The two passwords do not match."
+    ),
+    ["confirmPassword"]
+  )
 );
 
-type FormFields = Output<typeof schema>;
+type FormFields = InferOutput<typeof schema>;
 
 export default function Signup() {
   const dispatch = useAppDispatch();
@@ -59,7 +62,7 @@ export default function Signup() {
     try {
       const { data } = await fetcher.post("/signup", values);
       dispatch(signIn(data));
-      navigate("/", { unstable_viewTransition: true });
+      navigate("/", { viewTransition: true });
       reset();
     } catch (error: any) {
       toast.error(error?.response?.data?.message || error?.message, {
@@ -129,7 +132,7 @@ export default function Signup() {
                 </Button>
                 <br />
                 <p className="inline-block">Already have an account?</p>{" "}
-                <Link to="/login" unstable_viewTransition>
+                <Link to="/login" viewTransition>
                   <strong>Login now!</strong>
                 </Link>
               </form>

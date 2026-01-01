@@ -1,4 +1,4 @@
-import { Skeleton } from "@nextui-org/react";
+import { Skeleton } from "@heroui/react";
 import Alert from "../../../components/Alert";
 import { Post } from "../../../components/Card";
 import { useAppSelector } from "../../../hooks";

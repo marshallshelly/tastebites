@@ -1,5 +1,5 @@
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
-import { HorizontalCardProps } from "./types";
+import { Button, Card, CardBody, Image } from "@heroui/react";
+import type { HorizontalCardProps } from "./types";
 import { Link } from "react-router-dom";
 
 export default function Horizontal({

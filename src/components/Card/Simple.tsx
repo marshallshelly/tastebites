@@ -1,4 +1,4 @@
-import { Chip, Image } from "@nextui-org/react";
+import { Chip, Image } from "@heroui/react";
 import type { SimpleCardProps } from "./types";
 import { createElement } from "react";
 import { Link } from "react-router-dom";

@@ -1,33 +1,36 @@
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { Button, Divider, Input, Textarea } from "@nextui-org/react";
+import { Button, Divider, Input, Textarea } from "@heroui/react";
 import { SendHorizonal } from "lucide-react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import {
-  type Output,
+  type InferOutput,
   minLength,
   object,
   string,
   email,
   maxLength,
+  pipe,
 } from "valibot";
 import { isNumberOnly } from "../lib/utils/is-number-only";
 import { fetcher } from "../lib/utils/fetcher";
 import { toast } from "sonner";
 
 const schema = object({
-  name: string([minLength(1, "Name is required")]),
-  email: string([
+  name: pipe(string(), minLength(1, "Name is required")),
+  email: pipe(
+    string(),
     minLength(1, "Email is required"),
-    email("Invalid email address"),
-  ]),
-  phoneNumber: string([
+    email("Invalid email address")
+  ),
+  phoneNumber: pipe(
+    string(),
     minLength(10, "Must be at least 10 digits"),
-    maxLength(10, "Must not be greater than 10 digits"),
-  ]),
-  message: string([minLength(1, "Message is required")]),
+    maxLength(10, "Must not be greater than 10 digits")
+  ),
+  message: pipe(string(), minLength(1, "Message is required")),
 });
 
-type FormFields = Output<typeof schema>;
+type FormFields = InferOutput<typeof schema>;
 
 export default function Contact() {
   const {
@@ -117,7 +120,7 @@ export default function Contact() {
           <img
             src="https://images.unsplash.com/photo-1496412705862-e0088f16f791?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Product screenshot"
-            className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0 hidden sm:block"
+            className="w-3xl max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-228 md:-ml-4 lg:ml-0 hidden sm:block"
             width={2432}
             height={1442}
           />

@@ -1,4 +1,4 @@
-import { Image, Skeleton } from "@nextui-org/react";
+import { Image, Skeleton } from "@heroui/react";
 import { useGetProductBySlugQuery } from "../services/product";
 import { useParams } from "react-router-dom";
 
